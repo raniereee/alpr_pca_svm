@@ -1,2 +1,2 @@
 all:
-	g++ codigo.cpp -o alprpca `pkg-config --libs --cflags opencv`
+	g++ trainPCA4SVM.cpp -o trainPCA4SVM `pkg-config --libs --cflags opencv`
