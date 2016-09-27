@@ -1,0 +1,6 @@
+placas/1.jpeg
+placas/2.jpeg
+placas/3.jpeg
+placas/4.jpeg
+placas/5.jpeg
+placas/6.jpeg
