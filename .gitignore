@@ -1,3 +1,2 @@
 .*.swp
-alprpca
-trainPCA4SVM
+build/*
