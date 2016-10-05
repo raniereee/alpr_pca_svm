@@ -25,7 +25,7 @@ add_definitions(-W -Wall -DDEBUG -O0 -g3 ${DVC_FLAGS})
 
 include_directories(./)
 
-set(APSVM_APP  main.cpp)
+set(APSVM_APP  main.cpp detection.cpp)
 
 set(TRAINPCA4SVM trainPCA4SVM.cpp)
 
