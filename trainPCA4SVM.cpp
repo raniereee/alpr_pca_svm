@@ -18,22 +18,22 @@ vector<Mat> read_noplates_images()
 {
     vector<Mat> db;
 
-    db.push_back(imread("noplates/0.jpg",0));
-    db.push_back(imread("noplates/0.jpg",0));
-    db.push_back(imread("noplates/0.jpg",0));
-    db.push_back(imread("noplates/0.jpg",0));
-    db.push_back(imread("noplates/0.jpg",0));
-    db.push_back(imread("noplates/0.jpg",0));
-    db.push_back(imread("noplates/0.jpg",0));
-    db.push_back(imread("noplates/0.jpg",0));
-    db.push_back(imread("noplates/0.jpg",0));
-    db.push_back(imread("noplates/0.jpg",0));
-    db.push_back(imread("noplates/1.jpeg",0));
-    db.push_back(imread("noplates/1.jpeg",0));
-    db.push_back(imread("noplates/1.jpeg",0));
-    db.push_back(imread("noplates/1.jpeg",0));
-    db.push_back(imread("noplates/1.jpeg",0));
-    db.push_back(imread("noplates/1.jpeg",0));
+    db.push_back(imread("../noplates/0.jpg",0));
+    db.push_back(imread("../noplates/0.jpg",0));
+    db.push_back(imread("../noplates/0.jpg",0));
+    db.push_back(imread("../noplates/0.jpg",0));
+    db.push_back(imread("../noplates/0.jpg",0));
+    db.push_back(imread("../noplates/0.jpg",0));
+    db.push_back(imread("../noplates/0.jpg",0));
+    db.push_back(imread("../noplates/0.jpg",0));
+    db.push_back(imread("../noplates/0.jpg",0));
+    db.push_back(imread("../noplates/0.jpg",0));
+    db.push_back(imread("../noplates/1.jpeg",0));
+    db.push_back(imread("../noplates/1.jpeg",0));
+    db.push_back(imread("../noplates/1.jpeg",0));
+    db.push_back(imread("../noplates/1.jpeg",0));
+    db.push_back(imread("../noplates/1.jpeg",0));
+    db.push_back(imread("../noplates/1.jpeg",0));
 
     return db;
 }
@@ -43,22 +43,22 @@ vector<Mat> read_plates_images()
 {
     vector<Mat> db;
 
-    db.push_back(imread("plates/0.jpeg",0));
-    db.push_back(imread("plates/1.jpeg",0));
-    db.push_back(imread("plates/2.jpeg",0));
-    db.push_back(imread("plates/3.jpeg",0));
-    db.push_back(imread("plates/4.jpeg",0));
-    db.push_back(imread("plates/5.jpeg",0));
-    db.push_back(imread("plates/6.jpeg",0));
-    db.push_back(imread("plates/7.jpeg",0));
-    db.push_back(imread("plates/8.jpeg",0));
-    db.push_back(imread("plates/9.jpeg",0));
-    db.push_back(imread("plates/10.jpeg",0));
-    db.push_back(imread("plates/11.jpeg",0));
-    db.push_back(imread("plates/12.jpeg",0));
-    db.push_back(imread("plates/13.jpeg",0));
-    db.push_back(imread("plates/14.jpeg",0));
-    db.push_back(imread("plates/15.jpeg",0));
+    db.push_back(imread("../plates/0.jpeg",0));
+    db.push_back(imread("../plates/1.jpeg",0));
+    db.push_back(imread("../plates/2.jpeg",0));
+    db.push_back(imread("../plates/3.jpeg",0));
+    db.push_back(imread("../plates/4.jpeg",0));
+    db.push_back(imread("../plates/5.jpeg",0));
+    db.push_back(imread("../plates/6.jpeg",0));
+    db.push_back(imread("../plates/7.jpeg",0));
+    db.push_back(imread("../plates/8.jpeg",0));
+    db.push_back(imread("../plates/9.jpeg",0));
+    db.push_back(imread("../plates/10.jpeg",0));
+    db.push_back(imread("../plates/11.jpeg",0));
+    db.push_back(imread("../plates/12.jpeg",0));
+    db.push_back(imread("../plates/13.jpeg",0));
+    db.push_back(imread("../plates/14.jpeg",0));
+    db.push_back(imread("../plates/15.jpeg",0));
 
     return db;
 }
@@ -104,14 +104,33 @@ PCA do_pca(vector<Mat> db)
     return pca;
 }
 
+
+void PCA_write(FileStorage& fs, PCA pca)
+{
+    CV_Assert( fs.isOpened() );
+
+    fs << "name"    << "PCA";
+    fs << "vectors" << pca.eigenvectors;
+    fs << "values"  << pca.eigenvalues;
+    fs << "mean"    << pca.mean;
+}
+
 int main(int argc, char *argv[]) {
     
     vector<Mat> db;
     PCA pca_plates, pca_noplates;
 
+    (void) argc;
+    (void) argv;
+
     /* Plates set processing */
     db = read_plates_images();
     pca_plates = do_pca(db);
+
+    /* Save the PCA base */
+    FileStorage fs("PCA_PLANE.xml", FileStorage::WRITE);
+    PCA_write(fs, pca_plates);
+    fs.release();
 
     Mat mat = get_matrix_row_image(db);
 
@@ -127,7 +146,7 @@ int main(int argc, char *argv[]) {
 
     /* No plates set processing */
     db = read_noplates_images();
-    pca_noplates = do_pca(db);
+    //pca_noplates = do_pca(db);
 
     mat = get_matrix_row_image(db);
     Mat features_noplate_projected(mat.rows, NUM_PRINCIPAL_COMP, CV_32FC1);
@@ -145,9 +164,9 @@ int main(int argc, char *argv[]) {
     trainingData.convertTo(trainingData, CV_32FC1);
     Mat(trainingLabels).copyTo(classes);
 
-    FileStorage fs("PCA4SVM.xml", FileStorage::WRITE);
-    fs << "TrainingData" << trainingData;
-    fs << "classes" << classes;
-    fs.release();
+    FileStorage fss("PCA4SVM.xml", FileStorage::WRITE);
+    fss << "TrainingData" << trainingData;
+    fss << "classes" << classes;
+    fss.release();
 }
 
