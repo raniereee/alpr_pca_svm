@@ -6,6 +6,8 @@
 #include <iostream>
 #include <vector>
 
+#include "detection.h"
+
 using namespace std;
 using namespace cv;
 
@@ -53,15 +55,9 @@ int main ( int argc, char** argv )
     string filename_whithoutExt = getFilename(filename);
     cout << "working with file: "<< filename_whithoutExt << "\n";
 
-    /* TODO: Implement the plate detection module
     //Detect posibles plate regions
-    DetectRegions detectRegions;
-    detectRegions.setFilename(filename_whithoutExt);
-    detectRegions.saveRegions=false;
-    detectRegions.showSteps=true;
-    vector<Plate> posible_regions= detectRegions.run( input_image );
-    */
-
+    DetectPlates detectPlates;
+    detectPlates.setFilename("PCA_PLANE.xml");
 
     //SVM for each plate region to get valid car plates
     //Read file storage.
@@ -70,7 +66,7 @@ int main ( int argc, char** argv )
     Mat SVM_TrainingData;
     Mat SVM_Classes;
     fs["TrainingData"] >> SVM_TrainingData;
-    fs["classes"] >> SVM_Classes;
+    fs["classes"]     >> SVM_Classes;
     //Set SVM params
     CvSVMParams SVM_params;
     SVM_params.svm_type = CvSVM::C_SVC;
@@ -85,8 +81,7 @@ int main ( int argc, char** argv )
     //Train SVM
     CvSVM svmClassifier(SVM_TrainingData, SVM_Classes, Mat(), Mat(), SVM_params);
 
-
-
+    detectPlates.DetectPlate(input_image, &svmClassifier);
 
     return 0;
 }
