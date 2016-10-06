@@ -13,8 +13,10 @@ using namespace cv;
 
 class DetectPlates{
     public:
-        vector<Rect> DetectPlate(Mat input, CvSVM svmClassifier);
-        string filename;
+        vector<Rect> DetectPlate(Mat input, CvSVM * svmClassifier);
+        void readPCAPlane();
+        string pcafilename;
+        PCA pca_;
         void setFilename(string f);
         bool saveRegions;
         bool showSteps;
