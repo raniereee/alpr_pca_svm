@@ -5,8 +5,8 @@ using namespace std;
 using namespace cv;
 
 // Change to the number of principal components you want:
-#define NUM_PRINCIPAL_COMP 12
-#define DEBUG 1
+#define NUM_PRINCIPAL_COMP 2
+#define DEBUG 0
 
 Mat normalize(const Mat& src) {
     Mat srcnorm;
@@ -18,23 +18,21 @@ vector<Mat> read_noplates_images()
 {
     vector<Mat> db;
 
-    db.push_back(imread("../noplates/0.jpg",0));
-    db.push_back(imread("../noplates/0.jpg",0));
-    db.push_back(imread("../noplates/0.jpg",0));
-    db.push_back(imread("../noplates/0.jpg",0));
-    db.push_back(imread("../noplates/0.jpg",0));
-    db.push_back(imread("../noplates/0.jpg",0));
-    db.push_back(imread("../noplates/0.jpg",0));
-    db.push_back(imread("../noplates/0.jpg",0));
-    db.push_back(imread("../noplates/0.jpg",0));
-    db.push_back(imread("../noplates/0.jpg",0));
-    db.push_back(imread("../noplates/1.jpeg",0));
-    db.push_back(imread("../noplates/1.jpeg",0));
-    db.push_back(imread("../noplates/1.jpeg",0));
-    db.push_back(imread("../noplates/1.jpeg",0));
-    db.push_back(imread("../noplates/1.jpeg",0));
-    db.push_back(imread("../noplates/1.jpeg",0));
+    Mat image;
+    int i = 0;
+    while(1)
+    {
 
+        stringstream ss(stringstream::in | stringstream::out);
+        ss << "../noplates/" << i++ << ".jpeg";
+        //cout << "Image: " << ss.str() << "\n";
+        image = imread(ss.str(), 0);
+        if(!image.data )  break;
+
+        db.push_back(imread(ss.str(), 0));
+    }
+
+    printf("Number of no plates: %d\n", i);
     return db;
 }
 
@@ -43,23 +41,21 @@ vector<Mat> read_plates_images()
 {
     vector<Mat> db;
 
-    db.push_back(imread("../plates/0.jpeg",0));
-    db.push_back(imread("../plates/1.jpeg",0));
-    db.push_back(imread("../plates/2.jpeg",0));
-    db.push_back(imread("../plates/3.jpeg",0));
-    db.push_back(imread("../plates/4.jpeg",0));
-    db.push_back(imread("../plates/5.jpeg",0));
-    db.push_back(imread("../plates/6.jpeg",0));
-    db.push_back(imread("../plates/7.jpeg",0));
-    db.push_back(imread("../plates/8.jpeg",0));
-    db.push_back(imread("../plates/9.jpeg",0));
-    db.push_back(imread("../plates/10.jpeg",0));
-    db.push_back(imread("../plates/11.jpeg",0));
-    db.push_back(imread("../plates/12.jpeg",0));
-    db.push_back(imread("../plates/13.jpeg",0));
-    db.push_back(imread("../plates/14.jpeg",0));
-    db.push_back(imread("../plates/15.jpeg",0));
+    Mat image;
+    int i = 0;
+    while(1)
+    {
 
+        stringstream ss(stringstream::in | stringstream::out);
+        ss << "../plates/" << i++ << ".jpeg";
+        //cout << "Image: " << ss.str() << "\n";
+        image = imread(ss.str(), 0);
+        if(!image.data )  break;
+
+        db.push_back(imread(ss.str(), 0));
+    }
+
+    printf("Number of plates: %d\n", i);
     return db;
 }
 
