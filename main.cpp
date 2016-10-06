@@ -37,7 +37,9 @@ string getFilename(string s) {
 
 int main ( int argc, char** argv )
 {
-    cout << "OpenCV Automatic Number Plate Recognition\n";
+    cout << "************************************************\n";
+    cout << "Automatic Number Plate Recognition - PCA and SVM\n";
+    cout << "************************************************\n";
     char* filename;
     Mat input_image;
 
@@ -46,14 +48,14 @@ int main ( int argc, char** argv )
     {
         filename= argv[1];
         //load image  in gray level
-        input_image=imread(filename,1);
+        input_image=imread(filename,0);
     }else{
         printf("Use:\n\t%s image\n",argv[0]);
         return 0;
     }
 
     string filename_whithoutExt = getFilename(filename);
-    cout << "working with file: "<< filename_whithoutExt << "\n";
+    //cout << "working with file: "<< filename_whithoutExt << "\n";
 
     //Detect posibles plate regions
     DetectPlates detectPlates;
