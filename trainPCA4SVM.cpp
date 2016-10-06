@@ -109,7 +109,7 @@ void PCA_write(FileStorage& fs, PCA pca)
 {
     CV_Assert( fs.isOpened() );
 
-    fs << "name"    << "PCA";
+    //fs << "name"    << "PCA";
     fs << "vectors" << pca.eigenvectors;
     fs << "values"  << pca.eigenvalues;
     fs << "mean"    << pca.mean;
