@@ -1,6 +1,6 @@
 #include "detection.h"
 
-#define NUM_PRINCIPAL_COMP 12
+#define NUM_PRINCIPAL_COMP 2
 
 void DetectPlates::readPCAPlane()
 {
@@ -32,7 +32,10 @@ vector<Rect> DetectPlates::DetectPlate(Mat input, CvSVM * svmClassifier){
     Mat p;
     Rect roi;
 
+    #if 0
     imshow ("original", input);
+    waitKey(0);
+    #endif
 
     Mat xx(1, input.rows * input.cols, CV_32FC1);
     Mat img_row = input.reshape(1, 1);
@@ -41,17 +44,16 @@ vector<Rect> DetectPlates::DetectPlate(Mat input, CvSVM * svmClassifier){
     Mat dataprojected(1,  NUM_PRINCIPAL_COMP, CV_32FC1);
     pca_.project(xx, dataprojected);
 
-    waitKey(0);
-
-
-    /*
-    for(i=0; i < 10; i++)
+    response = (int) svmClassifier->predict(dataprojected);
+    if(response == 1)
     {
-
-        response = (int) svmClassifier->predict( p );
-        if(response == 1)
-            plates.push_back(roi);
+        plates.push_back(roi);
+        printf("*** Plate detected *** \n");
     }
-    */
+    else if (response == 0)
+    {
+        printf("!!! No plate detected !!!\n");
+    }
+
     return plates;
 }
